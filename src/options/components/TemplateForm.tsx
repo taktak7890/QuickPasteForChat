@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 interface Props {
   initialTitle: string
   initialFormat: string
   onSave: (title: string, format: string) => void
   onCancel: () => void
+  insertTrigger?: { ph: string; ts: number } | null
 }
 
 export default function TemplateForm({
@@ -12,6 +13,7 @@ export default function TemplateForm({
   initialFormat,
   onSave,
   onCancel,
+  insertTrigger,
 }: Props) {
   const [title, setTitle] = useState(initialTitle)
   const [format, setFormat] = useState(initialFormat)
@@ -42,6 +44,12 @@ export default function TemplateForm({
       ta.selectionStart = ta.selectionEnd = start + placeholder.length
     })
   }
+
+  useEffect(() => {
+    if (insertTrigger) {
+      insertPlaceholder(insertTrigger.ph)
+    }
+  }, [insertTrigger])
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

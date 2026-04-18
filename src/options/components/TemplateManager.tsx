@@ -11,6 +11,14 @@ interface Props {
 export default function TemplateManager({ templates, onChange }: Props) {
   // 'new' = 新規作成フォーム表示中、string = 該当 id の編集フォーム表示中、null = 非表示
   const [editingId, setEditingId] = useState<string | 'new' | null>(null)
+  const [insertTrigger, setInsertTrigger] = useState<{ ph: string; ts: number } | null>(null)
+
+  const handlePlaceholderClick = (ph: string) => {
+    if (editingId === null) {
+      setEditingId('new')
+    }
+    setInsertTrigger({ ph, ts: Date.now() })
+  }
 
   const handleSaveNew = (title: string, format: string) => {
     const newTemplate: Template = {
@@ -83,6 +91,7 @@ export default function TemplateManager({ templates, onChange }: Props) {
             initialFormat=""
             onSave={handleSaveNew}
             onCancel={() => setEditingId(null)}
+            insertTrigger={editingId === 'new' ? insertTrigger : null}
           />
         </div>
       )}
@@ -114,6 +123,7 @@ export default function TemplateManager({ templates, onChange }: Props) {
                     initialFormat={template.format}
                     onSave={(title, format) => handleUpdate(template.id, title, format)}
                     onCancel={() => setEditingId(null)}
+                    insertTrigger={editingId === template.id ? insertTrigger : null}
                   />
                 </div>
               ) : (
@@ -132,7 +142,7 @@ export default function TemplateManager({ templates, onChange }: Props) {
 
       {/* プレースホルダー一覧（フッター） */}
       <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/80">
-        <p className="text-xs font-medium text-slate-500 mb-2">利用可能なプレースホルダー</p>
+        <p className="text-xs font-medium text-slate-500 mb-2">利用可能なプレースホルダー <span className="text-[10px] font-normal text-slate-400">（クリックで挿入）</span></p>
         <div className="flex flex-wrap gap-1.5">
           {[
             '{{name}}',
@@ -142,12 +152,14 @@ export default function TemplateManager({ templates, onChange }: Props) {
             '{{HH:mm}}',
             '{{HH:mm:ss}}',
           ].map((ph) => (
-            <span
+            <button
               key={ph}
-              className="font-mono text-xs bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-md shadow-sm"
+              type="button"
+              onClick={() => handlePlaceholderClick(ph)}
+              className="font-mono text-xs bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 text-slate-600 px-2 py-0.5 rounded-md shadow-sm transition-colors cursor-pointer"
             >
               {ph}
-            </span>
+            </button>
           ))}
         </div>
         <p className="text-xs text-slate-400 mt-2">

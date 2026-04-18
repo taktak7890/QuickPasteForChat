@@ -13,7 +13,7 @@ export default function App() {
 
   // ストレージから初期値を読み込む
   useEffect(() => {
-    chrome.storage.sync.get(['name', 'templates'], (data: Partial<StorageData>) => {
+    chrome.storage.local.get(['name', 'templates'], (data: Partial<StorageData>) => {
       setName(data.name ?? '')
       setTemplates(data.templates ?? [])
       setLoading(false)
@@ -24,7 +24,7 @@ export default function App() {
   const persist = useCallback(
     (nextName: string, nextTemplates: Template[]) => {
       setSaveStatus('saving')
-      chrome.storage.sync.set({ name: nextName, templates: nextTemplates }, () => {
+      chrome.storage.local.set({ name: nextName, templates: nextTemplates }, () => {
         setSaveStatus('saved')
         setTimeout(() => setSaveStatus('idle'), 2000)
       })
@@ -63,11 +63,7 @@ export default function App() {
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* アイコン */}
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
+            <img src="/icon.png" alt="アイコン" className="w-8 h-8 rounded-lg shadow-sm" />
             <div>
               <h1 className="text-base font-semibold text-slate-800 leading-none">テンプレート設定</h1>
               <p className="text-xs text-slate-400 mt-0.5">Google Chat テンプレート拡張機能</p>

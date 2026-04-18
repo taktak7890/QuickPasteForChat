@@ -98,7 +98,7 @@ npm run dev
 ### ストレージのデータ構造
 
 ```ts
-// chrome.storage.sync に保存
+// chrome.storage.local に保存
 interface StorageData {
   name: string
   templates: Array<{

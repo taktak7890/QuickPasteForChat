@@ -12,7 +12,7 @@ const DOCUMENT_URL_PATTERNS = ['https://chat.google.com/*']
 async function rebuildContextMenus(): Promise<void> {
   await chrome.contextMenus.removeAll()
 
-  const data = (await chrome.storage.sync.get(['name', 'templates'])) as Partial<StorageData>
+  const data = (await chrome.storage.local.get(['name', 'templates'])) as Partial<StorageData>
   const templates: Template[] = data.templates ?? []
 
   if (templates.length === 0) {
@@ -70,7 +70,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   const templateId = menuItemId.slice('template_'.length)
 
-  const data = (await chrome.storage.sync.get(['name', 'templates'])) as Partial<StorageData>
+  const data = (await chrome.storage.local.get(['name', 'templates'])) as Partial<StorageData>
   const templates: Template[] = data.templates ?? []
   const name: string = data.name ?? ''
 
