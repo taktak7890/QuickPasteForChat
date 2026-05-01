@@ -2,6 +2,8 @@
 
 Google Chat の入力欄を右クリックし、登録済みテンプレートをカーソル位置に挿入できる Chrome 拡張機能。
 
+https://chromewebstore.google.com/detail/fnfddcgaagfgnjohhfdgnfpnfigeeglg?utm_source=item-share-cb
+
 ---
 
 ## ファイル構成
